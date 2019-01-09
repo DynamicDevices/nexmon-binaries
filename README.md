@@ -53,7 +53,7 @@ Either with
 
 Or I've forked the project to fix an RPiv3 issue I was seeing so you could use my fork at
 
-`git clone https://github.com/DynamicDevices/nexmon.git'
+`git clone https://github.com/DynamicDevices/nexmon.git`
 
 We need to replace the default RPi kernel headers with the ones that were used to build the running Balena kernel.
 
@@ -77,9 +77,13 @@ This is again taken from the nexmon instructions
 
 `cd ~/nexmon && . ./setup_env.sh && make`
 
-`mkdir /lib/modules/4.14.79/build`
+* For RPiv3 use
 
 `cd ~/nexmon/patches/bcm43430a1/7_45_41_46/nexmon  && make`
+
+* Or for RPiv3+ use (and replace the v3 driver references to 'bcm43430a1/7_45_41_46'  below with 'bcm43455c0/7_45_154')
+
+`cd ~/nexmon/patches/bcm43455c0/7_45_154/nexmon  && make`
 
 If the above step fails with a linking error try again with
 
@@ -186,6 +190,10 @@ Make sure changes are persisted and reboot - the new WiFi driver should now be l
 
 Run `iw phy` to show capabilities of the WiFi device
 
+You might need to first install the tool with
+
+`apt install iw`
+
 You'll see something like the the following output which should now contain 'monitor' as a supported mode
 
 ```
@@ -223,6 +231,10 @@ phy#0
 		channel 1 (2412 MHz), width: 20 MHz, center1: 2412 MHz
 		txpower 31.00 dBm
 ```
+
+`ifconfig wlan0 down`
+
+NB. We seem to get some strange errors with the RPiV3+ if we don't first take down the wlan0 interface
 
 `ifconfig mon0 up`
 
