@@ -63,7 +63,7 @@ This results in a path of the following format. If you're not using v2.29.0+rev1
 
 `curl https://resin-production-img-cloudformation.s3.amazonaws.com/images/raspberrypi3/2.29.0%2Brev1.dev/kernel_modules_headers.tar.gz -o /usr/src/kernel_modules_headers.tar.gz`
 `cd /usr/src && tar xzvf kernel_modules_headers.tar.gz && mv kernel_modules_headers linux-headers-4.14.79`
-'ln -s /usr/src/linux-headers-4.14.79 /lib/modules/4.14.79/build'
+`ln -s /usr/src/linux-headers-4.14.79 /lib/modules/4.14.79/build`
 
 # Build the WiFi firmware
 
