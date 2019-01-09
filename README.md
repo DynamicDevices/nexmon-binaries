@@ -79,7 +79,7 @@ If the above step fails with a linking error try again with
 
 `cd ~/nexmon/patches/bcm43430a1/7_45_41_46/nexmon && make clean && make`
 
-# Build the nextmon utility
+# Build the nexmon utility
 
 `cd ~/nexmon/utilities/nexutil && make`
 
