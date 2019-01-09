@@ -36,7 +36,9 @@ Install some basics we need from the build. The following is based on the nexmon
 @see https://github.com/seemoo-lab/nexmon#build-patches-for-bcm43430a1-on-the-rpi3zero-w-or-bcm434355c0-on-the-rpi3-using-raspbian-recommended
 
 `mount -o remount,rw /lib/modules`
+
 `apt-get update && apt-get upgrade`
+
 `apt install raspberrypi-kernel-headers build-essential git libgmp3-dev gawk qpdf bison flex make ssh libfl-dev xxd`
 
 Change to the root home directory
@@ -62,7 +64,9 @@ There's an example out of tree module project which contains a build script we c
 This results in a path of the following format. If you're not using v2.29.0+rev1 *development* you'll need to change this (if production then 'dev' changes 'prod')
 
 `curl https://resin-production-img-cloudformation.s3.amazonaws.com/images/raspberrypi3/2.29.0%2Brev1.dev/kernel_modules_headers.tar.gz -o /usr/src/kernel_modules_headers.tar.gz`
+
 `cd /usr/src && tar xzvf kernel_modules_headers.tar.gz && mv kernel_modules_headers linux-headers-4.14.79`
+
 `ln -s /usr/src/linux-headers-4.14.79 /lib/modules/4.14.79/build`
 
 # Build the WiFi firmware
@@ -70,9 +74,11 @@ This results in a path of the following format. If you're not using v2.29.0+rev1
 This is again taken from the nexmon instructions
 
 `cd ~/nexmon/buildtools/isl-0.10 && ./configure && make && make install && ln -s /usr/local/lib/libisl.so /usr/lib/arm-linux-gnueabihf/libisl.so.10`
+
 `cd ~/nexmon && . ./setup_env.sh && make`
 
 `mkdir /lib/modules/4.14.79/build`
+
 `cd ~/nexmon/patches/bcm43430a1/7_45_41_46/nexmon  && make`
 
 If the above step fails with a linking error try again with
@@ -110,10 +116,12 @@ Show a list of the running Balena containers with
 
 This will look something like
 
+```
 root@3702575:~# balena ps
 CONTAINER ID        IMAGE                              COMMAND                  CREATED             STATUS                                 PORTS               NAMES
 18917afb2d5f        0bde209699ca                       "/usr/bin/entry.sh /…"   17 hours ago        Up About a minute                                          main_740651_724383
 b420598e99f8        balena/armv7hf-supervisor:v9.0.1   "./entry.sh"             2 weeks ago         Up About a minute (health: starting)                       resin_supervisor
+```
 
 The 'main' container is the one we care about. Check the container ID, in this case starting with 18...
 
@@ -123,6 +131,7 @@ Now inspect that container looking for the mount points
 
 You'll see a lot of information with a number of mount points. Locate the /data configuration which will look something like this
 
+```
  {
                 "Type": "volume",
                 "Name": "1336122_resin-data",
@@ -133,6 +142,7 @@ You'll see a lot of information with a number of mount points. Locate the /data 
                 "RW": true,
                 "Propagation": ""
  },
+```
 
 From the about you can see that the '/data' mount in the main container maps to '/var/lib/docker/volumes/1336122_resin-data/_data' on the host OS.
 
@@ -167,7 +177,9 @@ Copy the configuration utility to the expected location
 `cp nexutil /usr/bin`
 
 Make sure changes are persisted and reboot - the new WiFi driver should now be loaded!
+
 `sync`
+
 `reboot`
 
 # Check the interface supports monitor mode
@@ -225,4 +237,3 @@ mon0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 ```
 
 And you're now ready to use your packet monitoring tool of choice...
-
